@@ -1,0 +1,40 @@
+{
+  "name": "ziya-ui",
+  "version": "0.0.0",
+  "description": "an interface for the ziya app",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "material-components-web": "^8.0.0",
+    "next": "^10.0.3",
+    "pouchdb": "^7.2.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "validate.js": "^0.13.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vixalien/ziya-ui.git"
+  },
+  "keywords": [
+    "ziya",
+    "app",
+    "church",
+    "pouchdb",
+    "ui"
+  ],
+  "author": "vixalien",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/vixalien/ziya-ui/issues"
+  },
+  "homepage": "https://github.com/vixalien/ziya-ui#readme"
+}

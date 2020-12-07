@@ -44,6 +44,8 @@ export default function Home({
 		}
 	};
 
+	if (process.browser) window.PouchDB = PouchDB;
+
 	let handleSubmit = (event) => {
 		// freeze and prevent Defaults for event
 		event = event.nativeEvent;
@@ -75,8 +77,8 @@ export default function Home({
 
 			<h1>Kibeho Sanctuary</h1>
 			<h2>Register as attendee</h2>
-			{messages.map((e) => (
-				<div>Message: {e}</div>
+			{messages.map((e, id) => (
+				<div key={"message-" + id}>Message: {e}</div>
 			))}
 			<form
 				ref={(el) => (form = el)}
@@ -151,6 +153,8 @@ export default function Home({
 	);
 }
 
+let isPresent = (obj) => !!Object.entries(obj).length;
+
 export async function getServerSideProps({ query, req }) {
 	let defaults = { province: "", district: "", sector: "" };
 	if (req.method == "POST") {
@@ -162,22 +166,29 @@ export async function getServerSideProps({ query, req }) {
 
 		let errors =
 			!!Object.entries(obj).length && obj.submitted ? checkAll(obj) : {};
-		
-    let messages = [];
-		if (!!Object.entries(errors).length) {
+		delete obj.submitted;
+
+		let messages = [];
+
+		let db = new PouchDB(process.env.DB_URL + "/reservations-test");
+
+		if (isPresent(errors)) {
 			messages.push("Check for errors then try again");
 		} else {
-      var db = new PouchDB("http://localhost:5984/reservations");
-      db.info();
-      console.log("PouchDB info: ", await db.info());
-			messages.push("Created account!");
+			await db
+				.post({ ...obj, time: Date.now() })
+				.then(() => messages.push("Created account"))
+				.catch((err) => {
+					messages.push("An unexpected error happened!: " + err);
+				});
 		}
 		return {
-			props: { defaultErrors: errors, defaultValues: obj, messages },
-		};
-	} else {
-		return {
-			props: { defaultErrors: {}, defaultValues: defaults, messages: [] },
+			props: {
+				defaultErrors: errors,
+				defaultValues: isPresent(errors) ? obj : defaults,
+				messages,
+			},
 		};
 	}
+	return { props: { defaultErrors: {}, defaultValues: {}, messages: [] } };
 }
