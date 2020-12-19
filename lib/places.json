@@ -1,17 +1,7 @@
 {
-	"provinces": [
-		"Kigali",
-		"East",
-		"West",
-		"South",
-		"North"
-	],
+	"provinces": ["Kigali", "East", "West", "South", "North"],
 	"districts": {
-		"Kigali": [
-			"Kicukiro",
-			"Gasabo",
-			"Nyarugenge"
-		],
+		"Kigali": ["Kicukiro", "Gasabo", "Nyarugenge"],
 		"East": [
 			"Rwamagana",
 			"Kayonza",
@@ -21,25 +11,9 @@
 			"Gatsibo",
 			"Nyagatare"
 		],
-		"West": [
-			"Rubavu",
-			"Nyamasheke",
-			"Nyabihu",
-			"Kibuye",
-			"Rusizi"
-		],
-		"South": [
-			"Ruhango",
-			"Nyanza",
-			"Nyaruguru",
-			"Nyamagabe",
-			"Muhanga",
-			"Huye"
-		],
-		"North": [
-			"Musanze",
-			"Rulindo"
-		]
+		"West": ["Rubavu", "Nyamasheke", "Nyabihu", "Karongi", "Rusizi"],
+		"South": ["Ruhango", "Nyanza", "Nyaruguru", "Nyamagabe", "Muhanga", "Huye"],
+		"North": ["Musanze", "Rulindo"]
 	},
 	"sectors": {
 		"Bugesera": [

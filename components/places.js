@@ -1,47 +1,81 @@
 import Places from "lib/places.json";
 import { Select } from "./input";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-let provinces = () => {
-	let all = [["Province", ""]];
+let generateProvinces = () => {
+	let all = [];
 	all.push(...Places.provinces.map((name) => [name, name]));
 	return Object.fromEntries(all);
-}
+};
 
-let districts = (province = "all") => {
-	let all = [["District", ""]];
-	Object.entries(Places.districts).forEach(district => {
-		if ((province == "all") || (district[0] == province.toString())) {
-			all.push(...district[1].map((name) => [name, name]))
+let generateDistricts = (province = "all") => {
+	let all = [];
+	Object.entries(Places.districts).forEach((district) => {
+		if (province == "all" || district[0] == province.toString()) {
+			all.push(...district[1].map((name) => [name, name]));
 		}
 	});
 	return Object.fromEntries(all.sort());
-}
+};
 
-let sectors = (district = "all") => {
-	let all = [["Sector", ""]];
-	Object.entries(Places.sectors).forEach(sector => {
-		if ((district == "all") || (sector[0] == district.toString())) {
-			all.push(...sector[1].map((name) => [name, name]))
+let generateSectors = (district = "all") => {
+	let all = [];
+	Object.entries(Places.sectors).forEach((sector) => {
+		if (district == "all" || sector[0] == district.toString()) {
+			all.push(...sector[1].map((name) => [name, name]));
 		}
 	});
 	return Object.fromEntries(all.sort());
-}
+};
 
 let PlaceInputs = ({ errors = {}, values = {} }) => {
-	let [ province, setProvince ] = useState("all");
-	let [ district, setDistrict ] = useState("all");
+	let [selectedProvince, setProvince] = useState("all");
+	let [selectedDistrict, setDistrict] = useState("all");
 
-	if (process.browser) window.errors = errors;
+	let [provinces, setProvinces] = useState(generateProvinces());
+	let [districts, setDistricts] = useState({});
+	let [sectors, setSectors] = useState({});
+
+	useEffect(() => {
+		setDistricts(generateDistricts(selectedProvince));
+	}, [selectedProvince]);
+
+	useEffect(() => {
+		setSectors(generateSectors(selectedDistrict));
+	}, [selectedDistrict]);
 
 	return (
 		<div>
-			<Select name="Province" defaultValue={values.province} error={errors.province} options={provinces()} onChange={e => { setProvince(e.target.value)}} />
-  		<Select name="District" defaultValue={values.district} error={errors.district} options={districts(province)} onChange={e => { setDistrict(e.target.value)}} />
-  		<Select name="Sector" defaultValue={values.sector} error={errors.sector} options={sectors(district)} />
-  	</div>
-  );
-}
+			<Select
+				name="Province"
+				autoComplete="off"
+				defaultValue={values.province}
+				error={errors.province}
+				options={provinces}
+				onChange={(e) => {
+					setProvince(e.target.value);
+				}}
+			/>
+			<Select
+				name="District"
+				autoComplete="off"
+				defaultValue={values.district}
+				error={errors.district}
+				options={districts}
+				onChange={(e) => {
+					setDistrict(e.target.value);
+				}}
+			/>
+			<Select
+				name="Sector"
+				autoComplete="off"
+				defaultValue={values.sector}
+				error={errors.sector}
+				options={sectors}
+			/>
+		</div>
+	);
+};
 
 export default PlaceInputs;

@@ -1,11 +1,13 @@
 import Head from "next/head";
 import { withRouter } from "next/router";
 import { useState } from "react";
-import PouchDB from "pouchdb";
-import getRawBody from "raw-body";
 
 import Input, { Select } from "components/input";
 import Places from "components/places";
+import DateTime from "components/datetime";
+
+import submit from "utils/fn/submit";
+import loadConfig from "utils/fn/loadConfig";
 
 import { parseInput, checkAll } from "lib/validate";
 import constraints from "lib/constraints";
@@ -14,12 +16,12 @@ export default function Home({
 	defaultValues: defaults,
 	defaultErrors = {},
 	messages = [],
+	dates,
+	places,
 }) {
 	let form;
 	let [errors, setErrors] = useState({ ...defaultErrors });
 	let [country, setCountry] = useState("Rwanda");
-
-	if (process.browser) window.checkAll = checkAll;
 
 	let handleInput = (input) => {
 		let error = parseInput(input);
@@ -44,8 +46,6 @@ export default function Home({
 		}
 	};
 
-	if (process.browser) window.PouchDB = PouchDB;
-
 	let handleSubmit = (event) => {
 		// freeze and prevent Defaults for event
 		event = event.nativeEvent;
@@ -65,8 +65,6 @@ export default function Home({
 		return !!newErrors;
 	};
 
-	if (process.browser) window.errors = errors;
-
 	let toObject = (array) => Object.fromEntries(array.map((el) => [el, el]));
 	return (
 		<main className="container">
@@ -78,7 +76,9 @@ export default function Home({
 			<h1>Kibeho Sanctuary</h1>
 			<h2>Register as attendee</h2>
 			{messages.map((e, id) => (
-				<div key={"message-" + id}>Message: {e}</div>
+				<div key={"message-" + id} className="message">
+					Message: {e}
+				</div>
 			))}
 			<form
 				ref={(el) => (form = el)}
@@ -86,8 +86,14 @@ export default function Home({
 				onChange={handleKeyUp}
 				method="POST"
 			>
+				<h3>Date</h3>
+				<DateTime
+					places={places}
+					dates={dates}
+					errors={errors}
+					values={defaults}
+				/>
 				<h3>Contact Info</h3>
-				<input name="submitted" type="hidden" value="true" />
 				<Input
 					name="Names"
 					defaultValue={defaults.names}
@@ -111,8 +117,15 @@ export default function Home({
 				<Select
 					name="Gender"
 					defaultValue={defaults.gender}
-					options={toObject(["Male", "Female"])}
+					options={toObject(["Male", "Female", "Other", "Unspecific"])}
 					error={errors.gender}
+				/>
+				<Input
+					name="Total number of people"
+					id="noPeople"
+					defaultValue={defaults.noPeople || 1}
+					type="number"
+					error={errors.noPeople}
 				/>
 				<h3>Location details</h3>
 				<Select
@@ -121,6 +134,7 @@ export default function Home({
 					defaultValue=""
 					options={toObject(["Rwanda", "Other"])}
 					onChange={(e) => setCountry(e.target.value)}
+					error={errors.country}
 				/>
 				{country == "Rwanda" ? (
 					<Places values={defaults} errors={errors} />
@@ -155,40 +169,28 @@ export default function Home({
 
 let isPresent = (obj) => !!Object.entries(obj).length;
 
-export async function getServerSideProps({ query, req }) {
-	let defaults = { province: "", district: "", sector: "" };
+export async function getServerSideProps({ req }) {
+	let defaults = {
+		province: "",
+		district: "",
+		sector: "",
+		date: "",
+		time: "",
+	};
+	let returns = {};
 	if (req.method == "POST") {
-		const body = await getRawBody(req);
-		let obj = {
-			...defaults,
-			...Object.fromEntries(new URLSearchParams(body.toString()).entries()),
-		};
-
-		let errors =
-			!!Object.entries(obj).length && obj.submitted ? checkAll(obj) : {};
-		delete obj.submitted;
-
-		let messages = [];
-
-		let db = new PouchDB(process.env.DB_URL + "/reservations-test");
-
-		if (isPresent(errors)) {
-			messages.push("Check for errors then try again");
-		} else {
-			await db
-				.post({ ...obj, time: Date.now() })
-				.then(() => messages.push("Created account"))
-				.catch((err) => {
-					messages.push("An unexpected error happened!: " + err);
-				});
-		}
-		return {
-			props: {
-				defaultErrors: errors,
-				defaultValues: isPresent(errors) ? obj : defaults,
-				messages,
-			},
-		};
+		returns = await submit(req, defaults);
 	}
-	return { props: { defaultErrors: {}, defaultValues: {}, messages: [] } };
+	let { dates, places } = await loadConfig();
+	return {
+		props: {
+			defaultErrors: {},
+			defaultValues: defaults,
+			messages: [],
+			errors: [],
+			dates,
+			places,
+			...returns,
+		},
+	};
 }

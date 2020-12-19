@@ -7,17 +7,28 @@ export default function Home({ docs }) {
 			<Head>
 				<title>Kibeho Sanctuary</title>
 				<link rel="icon" href="/favicon.ico" />
+				<script type="text/javascript" src="/sorttable.js"></script>
+				<script
+					dangerouslySetInnerHTML={{
+						__html: `
+            window.onload = () => sorttable.makeSortable(document.getElementById("table"))
+          `,
+					}}
+				/>
 			</Head>
-			<h1>Hello</h1>
+			<h1>Kibeho Sanctuary</h1>
+			<h2>Registered Members</h2>
 			<div>
 				Data:{" "}
-				<table>
+				<table id="table">
 					<thead>
 						<tr>
 							<th>Names</th>
 							<th>Phone</th>
+							<th>Email</th>
+							<th>Gender</th>
 							<th>Location</th>
-							<th></th>
+							<th>Time Registered</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -25,8 +36,15 @@ export default function Home({ docs }) {
 							<tr key={"doc-" + id}>
 								<td>{doc.names}</td>
 								<td>{doc.phone}</td>
-								<td>{doc.country} - {doc.country == "Rwanda" ? (doc.province + ' ' + doc.district + ' ' + doc.sector) : doc.specific_country}</td>
-								<td></td>
+								<td>{doc.email}</td>
+								<td>{doc.gender}</td>
+								<td>
+									{doc.country} -{" "}
+									{doc.country == "Rwanda"
+										? doc.province + " " + doc.district + " " + doc.sector
+										: doc.specific_country}
+								</td>
+								<td>{new Date(doc.time).toLocaleString()}</td>
 							</tr>
 						))}
 					</tbody>

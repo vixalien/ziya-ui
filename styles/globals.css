@@ -1,161 +1,161 @@
 @font-face {
-  font-family: sans;
-  font-weight: 100 900;
-  font-display: block;
-  src: url('/fonts/inter.woff2')
-    format('woff2');
+	font-family: sans;
+	font-weight: 100 900;
+	font-display: block;
+	src: url("/fonts/inter.woff2") format("woff2");
 }
 
 html,
 body {
-  z-index: 0;
+	z-index: 0;
 	background-color: var(--systemBackground);
 	color: var(--label);
-  padding: 0;
-  margin: 0;
-  font-family: Inter, sans, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+	padding: 0;
+	margin: 0;
+	font-family: Inter, sans, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+		Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 a {
-  color: var(--link);
-  text-decoration: none;
-  cursor: pointer;
+	color: var(--link);
+	text-decoration: none;
+	cursor: pointer;
 }
 
 a:hover,
 a:focus,
 a:active {
-  text-decoration: none;
+	text-decoration: none;
 }
 
 .code {
-  background: #fafafa;
-  border-radius: 5px;
-  padding: 0.75rem;
-  font-size: 1.1rem;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
+	background: #fafafa;
+	border-radius: 5px;
+	padding: 0.75rem;
+	font-size: 1.1rem;
+	font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+		Bitstream Vera Sans Mono, Courier New, monospace;
 }
-
-
 
 /* FIX */
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
+	border-collapse: collapse;
+	border-spacing: 0;
 }
 
 /* TABLES */
 
 table {
-  width:100%;
-  margin-bottom: 3em;
-  font-size: 14px;
-  word-wrap: normal;    /* 12 column layout fixes begin */
-  table-layout: fixed;
-  display: table;
-  overflow: hidden;
-  overflow-x: auto;     /* 12 column layout fixes end */
+	width: 100%;
+	min-width: 400px;
+	margin-bottom: 3em;
+	font-size: 14px;
+	word-wrap: normal; /* 12 column layout fixes begin */
+	table-layout: auto;
+	display: table;
+	overflow: hidden;
+	overflow-x: auto; /* 12 column layout fixes end */
 }
 
 table thead tr {
-  border-bottom: 1px solid #333;
+	border-bottom: 1px solid #333;
+	cursor: pointer;
 }
 
 table thead tr th {
-  font-weight:600;
-  color: #333;
-  padding: 3px 1em 3px 0;
-  vertical-align: bottom;
+	font-weight: 600;
+	color: #333;
+	padding: 3px 1em 3px 0;
+	vertical-align: bottom;
 }
 
 table tr {
-  border-bottom: 1px solid #e6e6e6;
+	border-bottom: 1px solid #e6e6e6;
 }
 
 table tr td {
-  color: #666;
-  line-height: 1.5em;
-  padding: .5em 1em .5em 0;
-  vertical-align: top;
+	color: #666;
+	line-height: 1.5em;
+	padding: 0.5em 1em 0.5em 0;
+	vertical-align: top;
 }
 
 .scroll-table table thead tr th,
 .scroll-table table tr td {
-  min-width: 80px;
+	min-width: 80px;
 }
 
 .table-3-up table tr td:nth-of-type(1) {
-  width: 20%;
+	width: 20%;
 }
 
 .table-3-up table tr td:nth-of-type(2),
 .table-3-up table tr td:nth-of-type(3) {
-  width:40%;
+	width: 40%;
 }
 
 .table-2-up table tr td:nth-of-type(1) {
-  width: 20%;
+	width: 20%;
 }
 
 .table-2-up table tr td:nth-of-type(2) {
-  width:80%;
+	width: 80%;
 }
 
 .table-icon table tr td:nth-of-type(1) {
-  width: 8%;
-  text-align: center;
-  padding-top: 1em;
-  padding-bottom: 1em;
+	width: 8%;
+	text-align: center;
+	padding-top: 1em;
+	padding-bottom: 1em;
 }
 
 .table-icon table tr td:nth-of-type(2),
 .table-icon table tr td:nth-of-type(3),
 .table-icon table tr td:nth-of-type(5) {
-  min-width: 130px;
+	min-width: 130px;
 }
-
 
 @media all and (max-width: 735px) {
-  table thead tr th,
-  table tr td {
-    /*font-size: 11px;*/
-    line-height:1.2em;
-  }
+	table thead tr th,
+	table tr td {
+		/*font-size: 11px;*/
+		line-height: 1.2em;
+	}
 
-  .scroll-table {
-    overflow-x:scroll;
-    -webkit-overflow-scrolling: touch;
-    -ms-overflow-style: none;
-    margin-left: -2em;
-    padding-left: 2em;
-    margin-right: -2em;
-    margin-top: 2em;
-    margin-bottom: 3em;
-  }
+	.scroll-table {
+		overflow-x: scroll;
+		-webkit-overflow-scrolling: touch;
+		-ms-overflow-style: none;
+		margin-left: -2em;
+		padding-left: 2em;
+		margin-right: -2em;
+		margin-top: 2em;
+		margin-bottom: 3em;
+	}
 
-  .scroll-table ::-webkit-scrollbar { width: 0 !important }
+	.scroll-table ::-webkit-scrollbar {
+		width: 0 !important;
+	}
 
-  .scroll-table table {
-    min-width: 650px;
-    width: auto;
-    margin-top: 0;
-    margin-bottom: 0;
-  }
+	.scroll-table table {
+		min-width: 650px;
+		width: auto;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
 
-  .scroll-table table thead tr th,
-  .scroll-table table tr td {
-    min-width: 80px;
-    line-height: 1.5em;
-  }
+	.scroll-table table thead tr th,
+	.scroll-table table tr td {
+		min-width: 80px;
+		line-height: 1.5em;
+	}
 }
 /* Control Icons */
-table thead tr th:nth-of-type(1) {
+/*table thead tr th:nth-of-type(1) {
   width: 15%;
 }
 table thead tr th:nth-of-type(2) {
@@ -163,9 +163,9 @@ table thead tr th:nth-of-type(2) {
 }
 table thead tr th:nth-of-type(3) {
   width: 40%;
-}
+}*/
 
-table tr td {
+/*table tr td {
   vertical-align: middle;
   padding: .8em 1em .8em 0;
 } 
@@ -184,8 +184,9 @@ table tr td:first-child {
 
 table tr td:first-child > * {
   margin: auto;
-}
+}*/
 
-caption, th {
-  text-align: left;
+caption,
+th {
+	text-align: left;
 }
