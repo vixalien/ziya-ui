@@ -101,6 +101,7 @@ export default function Home({
 					name="Names"
 					defaultValue={defaults.names}
 					placeholder="Full Names"
+					autoComplete="name"
 					error={errors.names}
 				/>
 				<Input
@@ -108,6 +109,7 @@ export default function Home({
 					defaultValue={defaults.email}
 					type="email"
 					placeholder="email@example.rw"
+					autoComplete="email"
 					error={errors.email}
 				/>
 				<Input
@@ -115,12 +117,14 @@ export default function Home({
 					defaultValue={defaults.phone}
 					type="tel"
 					placeholder="0788892020"
+					autoComplete="tel"
 					error={errors.phone}
 				/>
 				<Select
 					name="Gender"
 					defaultValue={defaults.gender}
 					options={toObject(["Male", "Female", "Other", "Unspecific"])}
+					autoComplete="sex"
 					error={errors.gender}
 				/>
 				<Input
@@ -137,6 +141,7 @@ export default function Home({
 					defaultValue=""
 					options={toObject(["Rwanda", "Other"])}
 					onChange={(e) => setCountry(e.target.value)}
+					autoComplete="country"
 					error={errors.country}
 				/>
 				{country == "Rwanda" ?
@@ -146,6 +151,7 @@ export default function Home({
 						defaultValue={defaults.specific_country}
 						id="specific_country"
 						placeholder="Specify your country"
+						autoComplete="country"
 						error={errors.specific_country}
 					/>
 				}
