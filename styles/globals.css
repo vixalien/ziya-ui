@@ -211,14 +211,14 @@ noscript {
 	left: 0;
 	right: 0;
 	bottom: 0;
+  z-index: 100;
+  padding: 30px;
+	background-color: white;
 }
 
 noscript div {
 	display: flex;
 	margin: auto;
 	text-align: center;
-	background-color: white;
-  z-index: 100;
-  padding: 30px;
   flex-direction: column;
 }
