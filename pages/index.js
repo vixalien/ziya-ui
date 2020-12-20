@@ -19,7 +19,7 @@ export default function Home({
 	dates,
 }) {
 	let form;
-	let errors= defaultErrors;
+	let [errors, setErrors] = useState(defaultErrors);
 	let [country, setCountry] = useState("Rwanda");
 
 	let handleInput = (input) => {
