@@ -54,6 +54,7 @@ let PlaceInputs = ({ errors = {}, values = {} }) => {
 				defaultValue={values.province}
 				error={errors.province}
 				options={provinces}
+				autoComplete="address-level1"
 				onChange={handleProvinceChange}
 			/>
 			<Select
@@ -61,6 +62,7 @@ let PlaceInputs = ({ errors = {}, values = {} }) => {
 				defaultValue={values.district}
 				error={errors.district}
 				options={districts}
+				autoComplete="address-level2"
 				onChange={handleDistrictChange}
 			/>
 			<Select
@@ -68,6 +70,7 @@ let PlaceInputs = ({ errors = {}, values = {} }) => {
 				defaultValue={values.sector}
 				error={errors.sector}
 				options={sectors}
+				autoComplete="address-level3"
 			/>
 		</div>
 	);
