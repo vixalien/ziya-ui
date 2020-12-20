@@ -58,10 +58,13 @@ let submit = async (req, defaults) => {
 			.then(() => {
 				return increment(form.date, form.time, noPeople)
 					.catch((e) => {
+						errors.push("Check for errors then try again");
 						(formErrors["noPeople"] = e.toString())
+						throw e;
 					})
 			})
-			.then(() => messages.push("Successfully created your account!"))
+			.then(() => messages.push("Successfully registered as attendee!"))
+			.catch();
 	}
 	console.log({
 		props: {
