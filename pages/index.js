@@ -10,7 +10,6 @@ import submit from "utils/fn/submit";
 import loadConfig from "utils/fn/loadConfig";
 
 import { parseInput, checkAll } from "lib/validate";
-import constraints from "lib/constraints";
 
 export default function Home({
 	defaultValues: defaults,
@@ -18,53 +17,56 @@ export default function Home({
 	messages = [],
 	errors: messageErrors,
 	dates,
-	places,
 }) {
 	let form;
-	let [errors, setErrors] = useState({ ...defaultErrors });
+	let errors= defaultErrors;
 	let [country, setCountry] = useState("Rwanda");
 
-	let handleInput = (input) => {
-		let error = parseInput(input);
+	let handleInput = () => {};
+	let handleKeyUp = e => e.preventDefault();
+	let handleSubmit = e => e.preventDefault();
 
-		if (error) {
-			setErrors({ ...errors, ...{ [input.name]: error } });
-		} else {
-			setErrors({ ...errors, ...{ [input.name]: null } });
-		}
+	// let handleInput = (input) => {
+	// 	let error = parseInput(input);
 
-		return error;
-	};
+	// 	if (error) {
+	// 		setErrors({ ...errors, ...{ [input.name]: error } });
+	// 	} else {
+	// 		setErrors({ ...errors, ...{ [input.name]: null } });
+	// 	}
 
-	let handleKeyUp = (event) => {
-		// freeze and prevent Defaults for event
-		event.persist();
-		event.preventDefault();
+	// 	return error;
+	// };
 
-		if (event.target.tagName == "INPUT" || event.target.tagName == "SELECT") {
-			// If the event was a keyup on an input, validate that input only
-			handleInput(event.target);
-		}
-	};
+	// let handleKeyUp = (event) => {
+	// 	// freeze and prevent Defaults for event
+	// 	event.persist();
+	// 	event.preventDefault();
 
-	let handleSubmit = (event) => {
-		// freeze and prevent Defaults for event
-		event = event.nativeEvent;
+	// 	if (event.target.tagName == "INPUT" || event.target.tagName == "SELECT") {
+	// 		// If the event was a keyup on an input, validate that input only
+	// 		handleInput(event.target);
+	// 	}
+	// };
 
-		let newErrors = checkAll(validate.collectFormValues(event.target));
+	// let handleSubmit = (event) => {
+	// 	// freeze and prevent Defaults for event
+	// 	event = event.nativeEvent;
 
-		setErrors(newErrors);
+	// 	let newErrors = checkAll(validate.collectFormValues(event.target));
 
-		let invalid = false;
-		Object.entries(newErrors).forEach(([value, key]) => {
-			if (key) invalid = true;
-		});
+	// 	setErrors(newErrors);
 
-		if (invalid) event.preventDefault();
-		console.log("is form invalid?: ", invalid);
+	// 	let invalid = false;
+	// 	Object.entries(newErrors).forEach(([value, key]) => {
+	// 		if (key) invalid = true;
+	// 	});
 
-		return !!newErrors;
-	};
+	// 	if (invalid) event.preventDefault();
+	// 	console.log("is form invalid?: ", invalid);
+
+	// 	return !!newErrors;
+	// };
 
 	let toObject = (array) => Object.fromEntries(array.map((el) => [el, el]));
 	return (
@@ -94,7 +96,6 @@ export default function Home({
 			>
 				<h3>Date</h3>
 				<DateTime
-					places={places}
 					dates={dates}
 					errors={errors}
 					values={defaults}
@@ -142,9 +143,8 @@ export default function Home({
 					onChange={(e) => setCountry(e.target.value)}
 					error={errors.country}
 				/>
-				{country == "Rwanda" ? (
-					<Places values={defaults} errors={errors} />
-				) : country == "Other" ? (
+				{country == "Rwanda" ?
+					<Places values={defaults} errors={errors} /> : 
 					<Input
 						name="Specify"
 						defaultValue={defaults.specific_country}
@@ -152,9 +152,7 @@ export default function Home({
 						placeholder="Specify your country"
 						error={errors.specific_country}
 					/>
-				) : (
-					""
-				)}
+				}
 				<div style={{ margin: "40px 0 10px" }}>
 					<button
 						className="block"

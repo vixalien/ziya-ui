@@ -33,43 +33,38 @@ let PlaceInputs = ({ errors = {}, values = {} }) => {
 	let [selectedProvince, setProvince] = useState("all");
 	let [selectedDistrict, setDistrict] = useState("all");
 
-	let [provinces, setProvinces] = useState(generateProvinces());
+	let provinces = generateProvinces();
 	let [districts, setDistricts] = useState({});
 	let [sectors, setSectors] = useState({});
 
-	useEffect(() => {
-		setDistricts(generateDistricts(selectedProvince));
-	}, [selectedProvince]);
+	let handleProvinceChange = e => {
+		setProvince(e.target.value);
+		setDistricts(generateDistricts(e.target.value));
+	};
 
-	useEffect(() => {
-		setSectors(generateSectors(selectedDistrict));
-	}, [selectedDistrict]);
+	let handleDistrictChange = e => {
+		setDistrict(e.target.value);
+		setSectors(generateSectors(e.target.value));
+	};
 
 	return (
 		<div>
 			<Select
 				name="Province"
-				autoComplete="off"
 				defaultValue={values.province}
 				error={errors.province}
 				options={provinces}
-				onChange={(e) => {
-					setProvince(e.target.value);
-				}}
+				onChange={handleProvinceChange}
 			/>
 			<Select
 				name="District"
-				autoComplete="off"
 				defaultValue={values.district}
 				error={errors.district}
 				options={districts}
-				onChange={(e) => {
-					setDistrict(e.target.value);
-				}}
+				onChange={handleDistrictChange}
 			/>
 			<Select
 				name="Sector"
-				autoComplete="off"
 				defaultValue={values.sector}
 				error={errors.sector}
 				options={sectors}

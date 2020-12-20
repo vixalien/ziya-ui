@@ -3,8 +3,8 @@ let Input = ({
 	label = true,
 	floating = true,
 	Input = null,
-	type = "text",
 	id = null,
+	type = "text",
 	error = false,
 	...props
 }) => {
@@ -16,7 +16,7 @@ let Input = ({
 			{Input ? (
 				Input
 			) : (
-				<input name={id} id={id} placeholder={name} type={type} {...props} />
+				<input name={id} type={type} placeholder={name} {...props} />
 			)}
 			{label ? <label htmlFor={id}>{name}</label> : null}
 		</div>
@@ -28,7 +28,7 @@ let Select = ({
 	label = true,
 	options = {},
 	error = false,
-	defaultOption = "Select",
+	defaultOption = "",
 	...props
 }) => {
 	name = name.replace(/(.)/, (e) => e.toUpperCase());

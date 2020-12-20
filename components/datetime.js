@@ -2,7 +2,7 @@ import { Select } from "./input";
 
 import { useState, useEffect } from "react";
 
-let DateTimeInputs = ({ dates: Dates, places, errors = {}, values = {} }) => {
+let DateTimeInputs = ({ dates: Dates, errors = {}, values = {} }) => {
 	let generateDates = () => {
 		return Object.fromEntries(
 			Object.keys(Dates).map((date) => [
@@ -14,9 +14,9 @@ let DateTimeInputs = ({ dates: Dates, places, errors = {}, values = {} }) => {
 
 	let parseTime = (time) => {
 		if (typeof time == "object") {
-			return [Object.values(time)[0], Object.keys(time)[0]];
+			return Object.keys(time)[0];
 		} else {
-			return [places, time];
+			return time;
 		}
 	};
 
@@ -25,7 +25,7 @@ let DateTimeInputs = ({ dates: Dates, places, errors = {}, values = {} }) => {
 			return {};
 		} else {
 			return Object.fromEntries(
-				Dates[date].map((time, id) => [parseTime(time)[1], parseTime(time)[1]])
+				Dates[date].map((time, id) => [parseTime(time), parseTime(time)])
 			);
 		}
 	};
@@ -33,9 +33,10 @@ let DateTimeInputs = ({ dates: Dates, places, errors = {}, values = {} }) => {
 	let [selectedDate, setDate] = useState("");
 	let [times, setTimes] = useState({});
 
-	useEffect(() => {
-		setTimes(generateTimes(selectedDate));
-	}, [selectedDate]);
+	let handleDateChange = e => {
+		setDate(e.target.value);
+		setTimes(generateTimes(e.target.value));
+	}
 
 	return (
 		<div>
@@ -45,9 +46,7 @@ let DateTimeInputs = ({ dates: Dates, places, errors = {}, values = {} }) => {
 				defaultValue={values.date}
 				error={errors.date}
 				options={generateDates()}
-				onChange={(e) => {
-					setDate(e.target.value);
-				}}
+				onChange={handleDateChange}
 			/>
 			<Select
 				name="Time"
