@@ -25,7 +25,8 @@ function MyApp({ Component, pageProps }) {
 				<noscript>
 					<div>
 						<h1>Javascript is disabled</h1>
-						<p>To use ZIYA, you must enable Javascript or upgrade to a browser supporting Javascript</p>
+						<p>To use ZIYA, you must enable Javascript or upgrade to a browser that supports Javascript</p>
+						<p>For example, download the latest version of <a href="http://firefox.com/">Firefox</a></p>
 					</div>
 				</noscript>
 				<Component {...pageProps} />
