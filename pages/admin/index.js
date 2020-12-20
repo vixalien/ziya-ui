@@ -55,7 +55,7 @@ export default function Home({ docs }) {
 }
 
 export async function getServerSideProps({ query, req }) {
-	let db = new PouchDB(process.env.DB_URL + "/reservations-test");
+	let db = new PouchDB(process.env.DB_URL + "/reservations-test2");
 	return {
 		props: {
 			docs: await db.allDocs({ include_docs: true }),
