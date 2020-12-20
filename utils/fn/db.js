@@ -75,8 +75,13 @@ let updateDate = async (id, value) => {
 
 let increment = async (date, time, by = 1) => {
 	let current = await currentPlaces(date, time);
-	if (current + by >= (await maxPlaces(date, time)))
-		throw new Error("The place selected is already full! Sorry!");
+	if (current + by >= (await maxPlaces(date, time))) {
+		let placesLeft = (await maxPlaces(date, time)) - current;
+		throw new Error(
+			"The place selected is already full!" +
+				(placesLeft ? " only " + placesLeft + " places left" : "")
+		);
+	}
 	return await getDate(date).then(async (date) => {
 		return await updateDate(date._id, { ...date.times, [time]: current + by });
 	});

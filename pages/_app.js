@@ -21,7 +21,13 @@ function MyApp({ Component, pageProps }) {
 					content="minimum-scale=1, initial-scale=1, maximum-scale=5, width=device-width, shrink-to-fit=no, user-scalable=yes, viewport-fit=cover"
 				/>
 			</Head>
-			<Component {...pageProps} />
+			<>
+				<noscript>
+					<h1>Javascript is disabled</h1>
+					<p>To use ZIYA, you must enable Javascript or upgrade to a browser supporting Javascript</p>
+				</noscript>
+				<Component {...pageProps} />
+			</>
 		</>
 	);
 }

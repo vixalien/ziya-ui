@@ -16,6 +16,7 @@ export default function Home({
 	defaultValues: defaults,
 	defaultErrors = {},
 	messages = [],
+	errors: messageErrors,
 	dates,
 	places,
 }) {
@@ -77,7 +78,12 @@ export default function Home({
 			<h2>Register as attendee</h2>
 			{messages.map((e, id) => (
 				<div key={"message-" + id} className="message">
-					Message: {e}
+					{e}
+				</div>
+			))}
+			{messageErrors.map((e, id) => (
+				<div key={"error-" + id} className="message error">
+					{e}
 				</div>
 			))}
 			<form
@@ -177,9 +183,13 @@ export async function getServerSideProps({ req }) {
 		date: "",
 		time: "",
 	};
-	let returns = {};
+	let returns = {},
+		errors = [];
 	if (req.method == "POST") {
-		returns = await submit(req, defaults);
+		returns = await submit(req, defaults).catch((e) => {
+			errors.push("An unexpected error occured: " + e.toString());
+			return;
+		});
 	}
 	let { dates, places } = await loadConfig();
 	return {
@@ -187,7 +197,7 @@ export async function getServerSideProps({ req }) {
 			defaultErrors: {},
 			defaultValues: defaults,
 			messages: [],
-			errors: [],
+			errors,
 			dates,
 			places,
 			...returns,

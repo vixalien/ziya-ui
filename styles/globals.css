@@ -190,3 +190,30 @@ caption,
 th {
 	text-align: left;
 }
+
+.message {
+  padding: 10px;
+  border-radius: 3px;
+  border: 1px solid green;
+  background-color: lightgreen;
+}
+
+.message.error {
+	border: 1px solid red;
+  background-color: tomato;
+}
+
+noscript {
+	display: flex;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+noscript div {
+	display: flex;
+	margin: auto;
+	text-align: center;
+}

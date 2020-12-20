@@ -50,11 +50,18 @@ let submit = async (req, defaults) => {
 		errors.push("Check for errors then try again");
 	} else {
 		// Push the data into DB
-		await save(data);
-		// Number of people
-		await increment(form.date, form.time, noPeople).catch(
-			(e) => (formErrors["noPeople"] = e.toString())
-		);
+		await save(data)
+			.catch((e) => {
+				errors.push("An error occured while creating your account!: " + e.toString());
+				throw e;
+			})
+			.then(() => {
+				return increment(form.date, form.time, noPeople)
+					.catch((e) => {
+						(formErrors["noPeople"] = e.toString())
+					})
+			})
+			.then(() => messages.push("Successfully created your account!"))
 	}
 	console.log({
 		props: {
