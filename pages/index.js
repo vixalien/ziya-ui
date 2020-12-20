@@ -22,51 +22,47 @@ export default function Home({
 	let errors= defaultErrors;
 	let [country, setCountry] = useState("Rwanda");
 
-	let handleInput = () => {};
-	let handleKeyUp = e => e.preventDefault();
-	let handleSubmit = e => e.preventDefault();
+	let handleInput = (input) => {
+		let error = parseInput(input);
 
-	// let handleInput = (input) => {
-	// 	let error = parseInput(input);
+		if (error) {
+			setErrors({ ...errors, ...{ [input.name]: error } });
+		} else {
+			setErrors({ ...errors, ...{ [input.name]: null } });
+		}
 
-	// 	if (error) {
-	// 		setErrors({ ...errors, ...{ [input.name]: error } });
-	// 	} else {
-	// 		setErrors({ ...errors, ...{ [input.name]: null } });
-	// 	}
+		return error;
+	};
 
-	// 	return error;
-	// };
+	let handleKeyUp = (event) => {
+		// freeze and prevent Defaults for event
+		event.persist();
+		event.preventDefault();
 
-	// let handleKeyUp = (event) => {
-	// 	// freeze and prevent Defaults for event
-	// 	event.persist();
-	// 	event.preventDefault();
+		if (event.target.tagName == "INPUT" || event.target.tagName == "SELECT") {
+			// If the event was a keyup on an input, validate that input only
+			handleInput(event.target);
+		}
+	};
 
-	// 	if (event.target.tagName == "INPUT" || event.target.tagName == "SELECT") {
-	// 		// If the event was a keyup on an input, validate that input only
-	// 		handleInput(event.target);
-	// 	}
-	// };
+	let handleSubmit = (event) => {
+		// freeze and prevent Defaults for event
+		event = event.nativeEvent;
 
-	// let handleSubmit = (event) => {
-	// 	// freeze and prevent Defaults for event
-	// 	event = event.nativeEvent;
+		let newErrors = checkAll(validate.collectFormValues(event.target));
 
-	// 	let newErrors = checkAll(validate.collectFormValues(event.target));
+		setErrors(newErrors);
 
-	// 	setErrors(newErrors);
+		let invalid = false;
+		Object.entries(newErrors).forEach(([value, key]) => {
+			if (key) invalid = true;
+		});
 
-	// 	let invalid = false;
-	// 	Object.entries(newErrors).forEach(([value, key]) => {
-	// 		if (key) invalid = true;
-	// 	});
+		if (invalid) event.preventDefault();
+		console.log("is form invalid?: ", invalid);
 
-	// 	if (invalid) event.preventDefault();
-	// 	console.log("is form invalid?: ", invalid);
-
-	// 	return !!newErrors;
-	// };
+		return !!newErrors;
+	};
 
 	let toObject = (array) => Object.fromEntries(array.map((el) => [el, el]));
 	return (
