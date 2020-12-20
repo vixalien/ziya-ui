@@ -151,7 +151,7 @@ export default function Home({
 						defaultValue={defaults.specific_country}
 						id="specific_country"
 						placeholder="Specify your country"
-						autoComplete="country"
+						autoComplete="country-name"
 						error={errors.specific_country}
 					/>
 				}
