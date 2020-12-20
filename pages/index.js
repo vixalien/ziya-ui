@@ -141,7 +141,7 @@ export default function Home({
 					defaultValue=""
 					options={toObject(["Rwanda", "Other"])}
 					onChange={(e) => setCountry(e.target.value)}
-					autoComplete="country"
+					autoComplete="country-name"
 					error={errors.country}
 				/>
 				{country == "Rwanda" ?
