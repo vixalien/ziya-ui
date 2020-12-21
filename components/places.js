@@ -1,7 +1,9 @@
-import Places from "lib/places.json";
-import { Select } from "./input";
-
 import { useState, useEffect } from "react";
+
+import { Select } from "components/form-input";
+
+import Places from "lib/places.json";
+
 
 let generateProvinces = () => {
 	let all = [];
@@ -30,20 +32,15 @@ let generateSectors = (district = "all") => {
 };
 
 let PlaceInputs = ({ errors = {}, values = {} }) => {
-	let [selectedProvince, setProvince] = useState("all");
-	let [selectedDistrict, setDistrict] = useState("all");
-
 	let provinces = generateProvinces();
 	let [districts, setDistricts] = useState({});
 	let [sectors, setSectors] = useState({});
 
 	let handleProvinceChange = e => {
-		setProvince(e.target.value);
 		setDistricts(generateDistricts(e.target.value));
 	};
 
 	let handleDistrictChange = e => {
-		setDistrict(e.target.value);
 		setSectors(generateSectors(e.target.value));
 	};
 

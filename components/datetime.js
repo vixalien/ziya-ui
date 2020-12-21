@@ -1,4 +1,4 @@
-import { Select } from "./input";
+import { Select } from "components/form-input";
 
 import { useState, useEffect } from "react";
 
@@ -33,10 +33,9 @@ let DateTimeInputs = ({ dates: Dates, errors = {}, values = {} }) => {
 	let [selectedDate, setDate] = useState("");
 	let [times, setTimes] = useState({});
 
-	let handleDateChange = e => {
-		setDate(e.target.value);
-		setTimes(generateTimes(e.target.value));
-	}
+	useEffect(() => {
+		setTimes(generateTimes(selectedDate))
+	}, [selectedDate])
 
 	return (
 		<div>
@@ -46,7 +45,7 @@ let DateTimeInputs = ({ dates: Dates, errors = {}, values = {} }) => {
 				defaultValue={values.date}
 				error={errors.date}
 				options={generateDates()}
-				onChange={handleDateChange}
+				onChange={e => setDate(e.target.value)}
 			/>
 			<Select
 				name="Time"

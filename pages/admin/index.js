@@ -23,10 +23,12 @@ export default function Home({ docs }) {
 				<table id="table">
 					<thead>
 						<tr>
+							<th>ID</th>
 							<th>Names</th>
 							<th>Phone</th>
 							<th>Email</th>
 							<th>Gender</th>
+							<th>Number of People</th>
 							<th>Location</th>
 							<th>Time Registered</th>
 						</tr>
@@ -34,10 +36,12 @@ export default function Home({ docs }) {
 					<tbody>
 						{docs.rows.map(({ doc }, id) => (
 							<tr key={"doc-" + id}>
+								<td>{doc._id}</td>
 								<td>{doc.names}</td>
 								<td>{doc.phone}</td>
 								<td>{doc.email}</td>
 								<td>{doc.gender}</td>
+								<td>{doc.noPeople}</td>
 								<td>
 									{doc.country} -{" "}
 									{doc.country == "Rwanda"
