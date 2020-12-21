@@ -5,14 +5,6 @@ import { save, increment } from "./db";
 
 let isPresent = (obj) => !!Object.entries(obj).length;
 
-let defaults = {
-	province: "",
-	district: "",
-	sector: "",
-	date: "",
-	time: "",
-};
-
 let submit = async (req, defaults) => {
 	let messages = [],
 		errors = [];
@@ -52,35 +44,26 @@ let submit = async (req, defaults) => {
 		// Push the data into DB
 		await save(data)
 			.catch((e) => {
-				errors.push("An error occured while creating your account!: " + e.toString());
+				errors.push(
+					"An error occured while creating your account!: " + e.toString()
+				);
 				throw e;
 			})
 			.then(() => {
-				return increment(form.date, form.time, noPeople)
-					.catch((e) => {
-						errors.push("Check for errors then try again");
-						(formErrors["noPeople"] = e.toString())
-						throw e;
-					})
+				return increment(form.date, form.time, noPeople).catch((e) => {
+					errors.push("Check for errors then try again");
+					formErrors["noPeople"] = e.toString();
+					throw e;
+				});
 			})
 			.then(() => messages.push("Successfully registered as attendee!"))
 			.catch();
 	}
-	console.log({
-		props: {
-			form,
-			data,
-			defaultErrors: formErrors,
-			defaultValues: isPresent(formErrors) ? form : defaults,
-			messages,
-			errors,
-		},
-	});
 	return {
-		defaultErrors: formErrors,
-		defaultValues: isPresent(formErrors) ? form : defaults,
+		errors: formErrors,
+		defaults: isPresent(formErrors) ? form : {},
 		messages,
-		errors,
+		errorMessages: errors,
 	};
 };
 

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { withRouter } from "next/router";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 import Input, { Select } from "components/input";
 import Places from "components/places";
@@ -19,7 +19,7 @@ export default function Home({
 	dates,
 }) {
 	let form;
-	let errors= defaultErrors;
+	let [errors, setErrors] = useState(defaultErrors);
 	let [country, setCountry] = useState("Rwanda");
 
 	let handleInput = (input) => {
@@ -91,11 +91,7 @@ export default function Home({
 				method="POST"
 			>
 				<h3>Date</h3>
-				<DateTime
-					dates={dates}
-					errors={errors}
-					values={defaults}
-				/>
+				<DateTime dates={dates} errors={errors} values={defaults} />
 				<h3>Contact Info</h3>
 				<Input
 					name="Names"
@@ -139,8 +135,9 @@ export default function Home({
 					onChange={(e) => setCountry(e.target.value)}
 					error={errors.country}
 				/>
-				{country == "Rwanda" ?
-					<Places values={defaults} errors={errors} /> : 
+				{country == "Rwanda" ? (
+					<Places values={defaults} errors={errors} />
+				) : (
 					<Input
 						name="Specify"
 						defaultValue={defaults.specific_country}
@@ -148,7 +145,7 @@ export default function Home({
 						placeholder="Specify your country"
 						error={errors.specific_country}
 					/>
-				}
+				)}
 				<div style={{ margin: "40px 0 10px" }}>
 					<button
 						className="block"
