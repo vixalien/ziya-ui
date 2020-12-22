@@ -9,7 +9,7 @@ let numbersDB = new PouchDB(process.env.DB_URL + "/reservations-numbers-test2");
 db.info();
 numbersDB.info();
 
-let getUser = async (id) => {
+let getReservation = async (id) => {
 	return await db.get(id);
 };
 
@@ -95,4 +95,4 @@ let currentPlaces = async (date, time) => {
 	});
 };
 
-export { getNextId, save, increment, getUser };
+export { getNextId, save, increment, getReservation };

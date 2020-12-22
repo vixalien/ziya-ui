@@ -8,23 +8,22 @@ let VerticalText = ({ fill="#fff", fontWeight = 200, x, text, ...style }) => {
     </svg>)
 }
 
-let SVG = ({ user, code, ...props }) => {
+let SVG = ({ reservation, code, ...props }) => {
   code = code.replace(`<svg `, `<svg x="60" y="155" width="120" height="120" `)
   return (
     <svg width={645} height={330} viewBox="0,0,645,330" xmlns="http://www.w3.org/2000/svg" {...props}>
       <rect x="2.5" y="2.5" width={640} height={325} style={{fill: 'black', strokeWidth: 5, stroke: 'white'}} />
       <path strokeDasharray="8,8" d="M530 5 l 0 320" style={{strokeWidth: 2, stroke: '#333'}} />
-      <VerticalText  x="560" text={"No. " + user._id.padStart(7, "0")} fontWeight={700} fontSize="35px"/>
+      <VerticalText  x="560" text={"No. " + reservation._id.padStart(7, "0")} fontWeight={700} fontSize="35px"/>
       <VerticalText  x="505" text="ZIYA reservations" fontWeight={500} fontSize="24px"/>
       <VerticalText  x="485" text="https://ziya-ui.vercel.app" fontWeight={300} fontSize="14px" fill="#8a8f98"/>
-      <text x={60} y={80} fill="white" style={{fontSize: '40px', fontWeight: 700}}>{user.names}</text>
-      <text x={60} y={110} fill="#8a8f98" style={{fontSize: '20px'}}>{user.email}</text>
-      <text x={60} y={135} fill="#8a8f98" style={{fontSize: '20px'}}>{user.phone}</text>
-      <image x={60} y={155} width={120} height={120} href={code} style={{ stroke: 'none'}} />
+      <text x={60} y={80} fill="white" style={{fontSize: '40px', fontWeight: 700}}>{reservation.names}</text>
+      <text x={60} y={110} fill="#8a8f98" style={{fontSize: '20px'}}>{reservation.email}</text>
+      <text x={60} y={135} fill="#8a8f98" style={{fontSize: '20px'}}>{reservation.phone}</text>
       <g dangerouslySetInnerHTML={{__html: code}}/>
-      <text x={200} y={175} fill="white" style={{fontSize: '24px'}}>{new Date(parseInt(user.date)).toLocaleDateString()}</text>
-      <text x={200} y={205} fill="white" style={{fontSize: '24px'}}>{user.time}</text>
-      <text x={200} y={265} fill="#8a8f98" style={{fontSize: '20px'}}>{user.noPeople} - {parseInt(user.noPeople) > 1 ? "People" : "Person"}</text>
+      <text x={200} y={175} fill="white" style={{fontSize: '24px'}}>{new Date(parseInt(reservation.date)).toLocaleDateString()}</text>
+      <text x={200} y={205} fill="white" style={{fontSize: '24px'}}>{reservation.time}</text>
+      <text x={200} y={265} fill="#8a8f98" style={{fontSize: '20px'}}>{reservation.noPeople} - {parseInt(reservation.noPeople) > 1 ? "People" : "Person"}</text>
       <style>{`
         @font-face {
           font-family: 'Inter';
@@ -44,7 +43,7 @@ let SVG = ({ user, code, ...props }) => {
   )
 }
 
-let Card = ({ user = {}, code , ...props }) => {
+let Card = ({ reservation = {}, code , ...props }) => {
   let scale = 1;
   if (process.browser) {
     let [ tempScale, setScale ] = useState((window.innerWidth - 40)  / (330));
@@ -56,7 +55,7 @@ let Card = ({ user = {}, code , ...props }) => {
 		<div>
     <div className="wrapper-1">
       <div className="wrapper-2">
-    		<SVG user={user} code={code} className="svg" {...props}/>
+    		<SVG reservation={reservation} code={code} className="svg" {...props}/>
       </div>
     </div>
 
