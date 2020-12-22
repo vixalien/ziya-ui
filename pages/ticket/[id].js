@@ -29,7 +29,6 @@ let getStaticProps = async ({ params: { id, ...elseP } }) => {
 	let user = await getUser(id).catch(() => (userPresent = false));
 	let code = "";
 	if (userPresent) code = await qrcode.toString("https://ziya-ui.vercel.app/ticket/"+id, { type: "svg" });
-	console.log("code: ", code);
 	// if (userPresent) code = await qrcode.toDataURL("https://ziya-ui.vercel.app/ticket/"+id);
 	return {
 		props: { id, user, userPresent, code },
