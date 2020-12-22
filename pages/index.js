@@ -1,49 +1,30 @@
 import Head from "next/head";
-import { withRouter } from "next/router";
-import { useState, useMemo } from "react";
+import { useState } from "react";
+import withErrors from "components/withErrors";
 
-import Input, { Select } from "components/input";
-import Places from "components/places";
+import Input, { Select } from "components/form-input";
+
 import DateTime from "components/datetime";
+import Places from "components/places";
 
 import submit from "utils/fn/submit";
 import loadConfig from "utils/fn/loadConfig";
 
 import { parseInput, checkAll } from "lib/validate";
 
+import { Messages, Errors, SubmitButton, Location } from "components/index";
+
 export default function Home({
-	defaultValues: defaults,
-	defaultErrors = {},
-	messages = [],
-	errors: messageErrors,
 	dates,
+	errors: defaultErrors,
+	messages,
+	errorMessages,
+	defaults,
+	...props
 }) {
-	let form;
 	let [errors, setErrors] = useState(defaultErrors);
-	let [country, setCountry] = useState("Rwanda");
 
-	let handleInput = (input) => {
-		let error = parseInput(input);
-
-		if (error) {
-			setErrors({ ...errors, ...{ [input.name]: error } });
-		} else {
-			setErrors({ ...errors, ...{ [input.name]: null } });
-		}
-
-		return error;
-	};
-
-	let handleKeyUp = (event) => {
-		// freeze and prevent Defaults for event
-		event.persist();
-		event.preventDefault();
-
-		if (event.target.tagName == "INPUT" || event.target.tagName == "SELECT") {
-			// If the event was a keyup on an input, validate that input only
-			handleInput(event.target);
-		}
-	};
+	let toObject = (array) => Object.fromEntries(array.map((el) => [el, el]));
 
 	let handleSubmit = (event) => {
 		// freeze and prevent Defaults for event
@@ -64,7 +45,6 @@ export default function Home({
 		return !!newErrors;
 	};
 
-	let toObject = (array) => Object.fromEntries(array.map((el) => [el, el]));
 	return (
 		<main className="container">
 			<Head>
@@ -74,130 +54,81 @@ export default function Home({
 
 			<h1>Kibeho Sanctuary</h1>
 			<h2>Register as attendee</h2>
-			{messages.map((e, id) => (
-				<div key={"message-" + id} className="message">
-					{e}
-				</div>
-			))}
-			{messageErrors.map((e, id) => (
-				<div key={"error-" + id} className="message error">
-					{e}
-				</div>
-			))}
-			<form
-				ref={(el) => (form = el)}
-				onSubmit={handleSubmit}
-				onChange={handleKeyUp}
-				method="POST"
-			>
-				<h3>Date</h3>
-				<DateTime dates={dates} errors={errors} values={defaults} />
-				<h3>Contact Info</h3>
+			<Messages messages={messages} />
+			<Errors errors={errorMessages} />
+			<form onSubmit={handleSubmit} method="POST">
+				<h3>Date & Time</h3>
+				<DateTime dates={dates} values={defaults} errors={errors} />
+				<h3>Personal Information</h3>
 				<Input
 					name="Names"
-					defaultValue={defaults.names}
-					placeholder="Full Names"
-					autoComplete="name"
 					error={errors.names}
+					defaultValue={defaults.names}
 				/>
 				<Input
 					name="Email"
-					defaultValue={defaults.email}
 					type="email"
-					placeholder="email@example.rw"
-					autoComplete="email"
 					error={errors.email}
+					defaultValue={defaults.email}
 				/>
 				<Input
 					name="Phone"
-					defaultValue={defaults.phone}
 					type="tel"
-					placeholder="0788892020"
-					autoComplete="tel"
 					error={errors.phone}
+					defaultValue={defaults.phone}
 				/>
 				<Select
 					name="Gender"
+					error={errors.gender}
 					defaultValue={defaults.gender}
 					options={toObject(["Male", "Female", "Other", "Unspecific"])}
-					autoComplete="sex"
-					error={errors.gender}
 				/>
 				<Input
-					name="Total number of people"
-					id="noPeople"
-					defaultValue={defaults.noPeople || 1}
+					name="NoPeople"
 					type="number"
+					min={1}
+					max={10}
 					error={errors.noPeople}
+					defaultValue={defaults.noPeople}
 				/>
 				<h3>Location details</h3>
-				<Select
-					name="Country"
-					defaultValue={defaults.country}
-					defaultValue=""
-					options={toObject(["Rwanda", "Other"])}
-					onChange={(e) => setCountry(e.target.value)}
-					autoComplete="country-name"
-					error={errors.country}
-				/>
-				{country == "Rwanda" ? (
-					<Places values={defaults} errors={errors} />
-				) : (
-					<Input
-						name="Specify"
-						defaultValue={defaults.specific_country}
-						id="specific_country"
-						placeholder="Specify your country"
-						autoComplete="country-name"
-						error={errors.specific_country}
-					/>
-				)}
-				<div style={{ margin: "40px 0 10px" }}>
-					<button
-						className="block"
-						style={{
-							width: "100%",
-							margin: 0,
-							height: "35px",
-							textAlign: "left",
-						}}
-					>
-						Next &rarr;
-					</button>
-				</div>
+				<Location defaults={defaults} errors={errors} />
+				<SubmitButton text="Register" />
 			</form>
 		</main>
 	);
 }
 
-let isPresent = (obj) => !!Object.entries(obj).length;
-
 export async function getServerSideProps({ req }) {
+	let { dates } = await loadConfig();
+	let errors = {};
 	let defaults = {
+		country: "",
 		province: "",
 		district: "",
 		sector: "",
 		date: "",
 		time: "",
+		gender: "",
 	};
-	let returns = {},
-		errors = [];
+
+	// IF submitting
+	let props = {};
 	if (req.method == "POST") {
-		returns = await submit(req, defaults).catch((e) => {
+		props = await submit(req, defaults).catch((e) => {
 			errors.push("An unexpected error occured: " + e.toString());
 			return;
 		});
 	}
-	let { dates, places } = await loadConfig();
+
 	return {
 		props: {
-			defaultErrors: {},
-			defaultValues: defaults,
-			messages: [],
-			errors,
 			dates,
-			places,
-			...returns,
+			errors,
+			defaults,
+			messages: [],
+			errorMessages: [],
+			...props,
 		},
 	};
 }
