@@ -188,7 +188,6 @@ let handlers = (formDates, setDates, RN, setNow, defaultPlaces, setPlaces) => {
 
 			if (!date)
 				return new Notif("Date is invalid or not present.", { error: true });
-			console.log("Adding date: ", date);
 			addDate(date);
 		},
 
