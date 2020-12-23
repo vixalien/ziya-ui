@@ -1,7 +1,9 @@
 import PouchDB from "pouchdb";
 
+import variables from "lib/variables";
+
 export default async (req, res) => {
-	let db = new PouchDB(process.env.DB_URL + "/base-config");
+	let db = new PouchDB(variables.dbs.config);
 
 	try {
 		JSON.parse(req.body);

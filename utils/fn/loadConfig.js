@@ -1,5 +1,7 @@
 import PouchDB from "pouchdb";
 
+import variables from "lib/variables";
+
 let generateForThisWeek = () => {
 	let dates = {};
 	let now = Date.parse(
@@ -17,7 +19,7 @@ let generateForThisWeek = () => {
 };
 
 let loadConfig = async (req, res) => {
-	let db = new PouchDB(process.env.DB_URL + "/base-config");
+	let db = new PouchDB(variables.dbs.config);
 	await db.allDocs().then(async (docs) => {
 		if (docs.total_rows == 0) {
 			await db.put({ _id: "0", dates: generateForThisWeek(), places: 300 });

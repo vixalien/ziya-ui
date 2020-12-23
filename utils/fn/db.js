@@ -2,8 +2,10 @@ import PouchDB from "pouchdb";
 
 import loadConfig from "./loadConfig";
 
-let db = new PouchDB(process.env.DB_URL + "/reservations-test2");
-let numbersDB = new PouchDB(process.env.DB_URL + "/reservations-numbers-test2");
+import variables from "lib/variables";
+
+let db = new PouchDB(variables.dbs.reservations);
+let numbersDB = new PouchDB(variables.dbs.numbers);
 
 // make sure the tables exists
 db.info();
@@ -26,7 +28,7 @@ let getNextId = async () => {
 };
 
 let save = async (data) => {
-	await db.put({ _id: await getNextId(), ...data, time: Date.now() });
+	await db.put({ _id: await getNextId(), ...data, timeRegistered: Date.now() });
 };
 
 let parseTime = (time, defaultPlaces) => {

@@ -1,6 +1,8 @@
 import Head from "next/head";
 import PouchDB from "pouchdb";
 
+import variables from "lib/variables";
+
 export default function Home({ docs }) {
 	return (
 		<main>
@@ -59,7 +61,7 @@ export default function Home({ docs }) {
 }
 
 export async function getServerSideProps({ query, req }) {
-	let db = new PouchDB(process.env.DB_URL + "/reservations-test2");
+	let db = new PouchDB(variables.dbs.reservations);
 	return {
 		props: {
 			docs: await db.allDocs({ include_docs: true }),

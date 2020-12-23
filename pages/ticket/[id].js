@@ -5,6 +5,8 @@ import { getReservation } from "utils/fn/db";
 import { SubmitButton } from "components/index"
 import Card from "components/card"
 
+import variables from "lib/variables";
+
 let Ticket = ({ id, reservationPresent, reservation = {}, code, ...props }) => {
 	return (
 		<main>
@@ -14,7 +16,7 @@ let Ticket = ({ id, reservationPresent, reservation = {}, code, ...props }) => {
 			{reservationPresent ?
 				<div>
 					<Card code={code} reservation={reservation} />
-					<a href={"/api/download-ticket.png?id="+reservation._id} download={"ZIYA_Ticket_"+reservation._id+".png"}><SubmitButton text="Download Ticket"/></a>
+					<a href={variables.links.downloadTicket+reservation._id} download={"ZIYA_Ticket_"+reservation._id+".png"}><SubmitButton text="Download Ticket"/></a>
 				</div>:
 				<div>ID not found!</div>
 			}
@@ -28,7 +30,7 @@ let getStaticProps = async ({ params: { id, ...elseP } }) => {
 	let reservationPresent = true;
 	let reservation = await getReservation(id).catch(() => (reservationPresent = false));
 	let code = "";
-	if (reservationPresent) code = await qrcode.toString("https://ziya-ui.vercel.app/ticket/"+id, { type: "svg" });
+	if (reservationPresent) code = await qrcode.toString(variables.links.ticket+id, { type: "svg" });
 	// if (reservationPresent) code = await qrcode.toDataURL("https://ziya-ui.vercel.app/ticket/"+id);
 	return {
 		props: { id, reservation, reservationPresent, code },

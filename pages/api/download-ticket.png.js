@@ -6,6 +6,8 @@ import { SVG } from "components/card"
 
 import { getReservation } from "utils/fn/db";
 
+import variables from "lib/variables";
+
 let btoa = (str) => Buffer.from(str).toString('base64');
 
 export default async (req, res) => {
@@ -14,7 +16,7 @@ export default async (req, res) => {
 		let reservationPresent = true;
 		let reservation = await getReservation(id).catch(() => (reservationPresent = false));
 		if (reservationPresent) {
-			let code = await qrcode.toString("https://ziya-ui.vercel.app/ticket/"+id, { type: "svg" });
+			let code = await qrcode.toString(variables.links.ticket+id, { type: "svg" });
 
 			
 			let svg = renderToString(<SVG reservation={reservation} code={code} />);
