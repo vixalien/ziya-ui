@@ -32,6 +32,7 @@ let submit = async (req, defaults) => {
 		"province",
 		"district",
 		"sector",
+		"noPeople",
 	]);
 
 	let noPeople = parseInt(form["noPeople"]);
