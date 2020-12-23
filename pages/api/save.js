@@ -15,8 +15,6 @@ export default async (req, res) => {
 
 	let body = JSON.parse(req.body);
 
-	console.log("body: ", body);
-
 	if (typeof body.dates != "object" || typeof body.places != "number") {
 		res.statusCode = 400;
 		return res.json({

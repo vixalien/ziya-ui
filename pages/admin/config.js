@@ -12,8 +12,6 @@ export default function Home({ dates, places: defaultPlaces, ...props }) {
 	let [formDates, setDates] = useState(dates);
 	let [noPlaces, setPlaces] = useState(defaultPlaces);
 	let [RN, setNow] = useState(Date.now());
-	if (process.browser) window.dates = formDates;
-	if (process.browser) window.Notif = Notif;
 
 	let {
 		handleAddTime,
