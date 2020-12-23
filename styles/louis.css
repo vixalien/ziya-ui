@@ -710,7 +710,19 @@ input[type="checkbox"]:checked {
 	* pesky delay.
 	*/
 }
+.floating ::-ms-input-placeholder {
+	opacity: 0;
+	transition: inherit;
+}
+.floating ::placeholder {
+	opacity: 0;
+	transition: inherit;
+}
 .floating ::-webkit-input-placeholder {
+	opacity: 0;
+	transition: inherit;
+}
+.floating ::input-placeholder {
 	opacity: 0;
 	transition: inherit;
 }
@@ -745,7 +757,16 @@ input[type="checkbox"]:checked {
 			* Show the placeholder when the input is focused.
 			*/
 }
+.floating input:focus::-ms-input-placeholder {
+	opacity: 1;
+}
+.floating input:focus::placeholder {
+	opacity: 1;
+}
 .floating input:focus::-webkit-input-placeholder {
+	opacity: 1;
+}
+.floating input:focus::input-placeholder {
 	opacity: 1;
 }
 .floating input:placeholder-shown + label {
