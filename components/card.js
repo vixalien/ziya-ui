@@ -43,7 +43,7 @@ let SVG = ({ reservation, code, ...props }) => {
   )
 }
 
-let Card = ({ reservation = {}, code , ...props }) => {
+let Style = () => {
   let scale = 1;
   if (process.browser) {
     let [ tempScale, setScale ] = useState((window.innerWidth - 40)  / (330));
@@ -51,15 +51,8 @@ let Card = ({ reservation = {}, code , ...props }) => {
     addEventListener("resize", () => setScale((window.innerWidth - 40)  / (330)))
     scale = useMemo(() => tempScale > 0.5 ? tempScale : 0.5, [tempScale]);
   }
-	return (
-		<div>
-    <div className="wrapper-1">
-      <div className="wrapper-2">
-    		<SVG reservation={reservation} code={code} className="svg" {...props}/>
-      </div>
-    </div>
-
-		<style>{`
+  return (
+    <style>{`
       @media (max-width: 400px) and (min-width: 250px) {
         .wrapper-1 {
           display: table;
@@ -73,7 +66,20 @@ let Card = ({ reservation = {}, code , ...props }) => {
           transform-origin: top left;
           margin-top: -50%;
         }
-		`}</style>
+    `}</style>
+  )
+
+}
+
+let Card = ({ reservation = {}, code , ...props }) => {
+	return (
+		<div>
+    <div className="wrapper-1">
+      <div className="wrapper-2">
+    		<SVG reservation={reservation} code={code} className="svg" {...props}/>
+      </div>
+    </div>
+    <Style />
 		</div>
 	);
 };
