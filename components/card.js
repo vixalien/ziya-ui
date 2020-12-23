@@ -75,14 +75,11 @@ let Style = () => {
 
 let Card = ({ reservation = {}, code , ...props }) => {
 	return (
-		<div>
     <div className="wrapper-1">
       <div className="wrapper-2">
     		<SVG reservation={reservation} code={code} className="svg" {...props}/>
       </div>
     </div>
-    <Style />
-		</div>
 	);
 };
 
