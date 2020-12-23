@@ -1,5 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 
+import variables from "lib/variables";
+
 let VerticalText = ({ fill="#fff", fontWeight = 200, x, text, ...style }) => {
   return (
     <svg x={x} y="50%" style={{overflow: "visible"}}>
@@ -15,8 +17,8 @@ let SVG = ({ reservation, code, ...props }) => {
       <rect x="2.5" y="2.5" width={640} height={325} style={{fill: 'black', strokeWidth: 5, stroke: 'white'}} />
       <path strokeDasharray="8,8" d="M530 5 l 0 320" style={{strokeWidth: 2, stroke: '#333'}} />
       <VerticalText  x="560" text={"No. " + reservation._id.padStart(7, "0")} fontWeight={700} fontSize="35px"/>
-      <VerticalText  x="505" text="ZIYA reservations" fontWeight={500} fontSize="24px"/>
-      <VerticalText  x="485" text="https://ziya-ui.vercel.app" fontWeight={300} fontSize="14px" fill="#8a8f98"/>
+      <VerticalText  x="505" text={variables.app_name} fontWeight={500} fontSize="24px"/>
+      <VerticalText  x="485" text={variables.url} fontWeight={300} fontSize="14px" fill="#8a8f98"/>
       <text x={60} y={80} fill="white" style={{fontSize: '40px', fontWeight: 700}}>{reservation.names}</text>
       <text x={60} y={110} fill="#8a8f98" style={{fontSize: '20px'}}>{reservation.email}</text>
       <text x={60} y={135} fill="#8a8f98" style={{fontSize: '20px'}}>{reservation.phone}</text>
