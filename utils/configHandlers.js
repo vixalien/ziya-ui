@@ -119,7 +119,7 @@ let handlers = (formDates, setDates, RN, setNow, defaultPlaces, setPlaces) => {
 		return dates;
 	};
 
-	normalize: (dates, places) => {
+	let normalize = (dates, places) => {
 		return Object.fromEntries(
 			Object.entries(dates).map(([date, times]) => [
 				date,
@@ -195,9 +195,9 @@ let handlers = (formDates, setDates, RN, setNow, defaultPlaces, setPlaces) => {
 			e.preventDefault();
 
 			let places = parseInt(
-				e.target.querySelector("input#defaultPlaces").value
+				e.target.querySelector('input[name="defaultPlaces"]').value
 			);
-			let keep = e.target.querySelector("input#keep").checked;
+			let keep = e.target.querySelector('input[name="keep"]').checked;
 
 			let tempDates = formDates;
 			if (keep) tempDates = normalize(tempDates, defaultPlaces);

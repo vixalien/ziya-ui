@@ -46,7 +46,7 @@ export default function Home({ dates, places: defaultPlaces, ...props }) {
 					name={"Default number of places (" + noPlaces + ")"}
 					id="defaultPlaces"
 					placeholder={defaultPlaces}
-					autocomplete="off"
+					autoComplete="off"
 				/>
 				<div className="check-div">
 					<input name="keep" id="keep" type="checkbox" />

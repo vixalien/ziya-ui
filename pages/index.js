@@ -84,7 +84,8 @@ export default function Home({
 					options={toObject(["Male", "Female", "Other", "Unspecific"])}
 				/>
 				<Input
-					name="NoPeople"
+					name="Total number of people"
+					id="noPeople"
 					type="number"
 					min={1}
 					max={10}
