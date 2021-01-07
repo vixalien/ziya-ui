@@ -16,7 +16,7 @@ let SVG = ({ reservation, code, ...props }) => {
     <svg width={645} height={330} viewBox="0,0,645,330" xmlns="http://www.w3.org/2000/svg" {...props}>
       <rect x="2.5" y="2.5" width={640} height={325} style={{fill: 'black', strokeWidth: 5, stroke: 'white'}} />
       <path strokeDasharray="8,8" d="M530 5 l 0 320" style={{strokeWidth: 2, stroke: '#333'}} />
-      <VerticalText  x="560" text={"No. " + reservation._id.padStart(7, "0")} fontWeight={700} fontSize="35px"/>
+      <VerticalText  x="560" text={"No. " + reservation._id.padStart(8, "0")} fontWeight={700} fontSize="35px"/>
       <VerticalText  x="505" text={variables.app_name} fontWeight={500} fontSize="24px"/>
       <VerticalText  x="485" text={variables.url} fontWeight={300} fontSize="14px" fill="#8a8f98"/>
       <text x={60} y={80} fill="white" style={{fontSize: '40px', fontWeight: 700}}>{reservation.names}</text>

@@ -1,4 +1,6 @@
 import PouchDB from "pouchdb";
+import Mango from "pouchdb-find";
+PouchDB.plugin(Mango);
 
 import loadConfig from "./loadConfig";
 
@@ -16,15 +18,18 @@ let getReservation = async (id) => {
 };
 
 let getNextId = async () => {
-	return await db.info().then(({ doc_count }) => {
-		if (doc_count > 0) {
-			return db
-				.allDocs({ descending: true, limit: 1 })
-				.then((data) => (parseInt(data.rows[0].id) + 1).toString());
-		} else {
-			return "0";
-		}
-	});
+	return await db.info()
+		.then(({ doc_count }) => {
+			if (doc_count > 0) {
+				return db
+					.allDocs({ descending: true, limit: 1 })
+					.then((data) => (parseInt(data.rows[0].id) + 1).toString());
+			} else {
+				return "0";
+			}
+		})
+		.then(id => id.padStart(8, "0"))
+		;
 };
 
 let save = async (data) => {
@@ -101,4 +106,16 @@ let currentPlaces = async (date, time) => {
 	});
 };
 
-export { getNextId, save, increment, getReservation };
+let allReservations = async (date = null, time = null, opts = {}) => {
+	let dateOpts = {};
+	return db.find({
+	  selector: {
+	    _id: {'$exists': true},
+	    ...dateOpts,
+	    ...opts
+	  },
+	  sort: [{_id: 'desc'}]
+	});
+}
+
+export { getNextId, save, increment, getReservation, allReservations };

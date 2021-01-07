@@ -1,9 +1,12 @@
 import Head from "next/head";
-import PouchDB from "pouchdb";
+import { allReservations } from "utils/fn/db";
 
 import variables from "lib/variables";
 
+import Reservations from "components/reservations";
+
 export default function Home({ docs }) {
+	console.log("reservations", docs);
 	return (
 		<main>
 			<Head>
@@ -22,49 +25,16 @@ export default function Home({ docs }) {
 			<h2>Registered Members</h2>
 			<div>
 				Data:{" "}
-				<table id="table">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>Names</th>
-							<th>Phone</th>
-							<th>Email</th>
-							<th>Gender</th>
-							<th>Number of People</th>
-							<th>Location</th>
-							<th>Time Registered</th>
-						</tr>
-					</thead>
-					<tbody>
-						{docs.rows.map(({ doc }, id) => (
-							<tr key={"doc-" + id}>
-								<td>{doc._id}</td>
-								<td>{doc.names}</td>
-								<td>{doc.phone}</td>
-								<td>{doc.email}</td>
-								<td>{doc.gender}</td>
-								<td>{doc.noPeople}</td>
-								<td>
-									{doc.country} -{" "}
-									{doc.country == "Rwanda"
-										? doc.province + " " + doc.district + " " + doc.sector
-										: doc.specific_country}
-								</td>
-								<td>{new Date(doc.time).toLocaleString()}</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
+				<Reservations reservations={docs}/>
 			</div>
 		</main>
 	);
 }
 
 export async function getServerSideProps({ query, req }) {
-	let db = new PouchDB(variables.dbs.reservations);
 	return {
 		props: {
-			docs: await db.allDocs({ include_docs: true }),
+			docs: await allReservations().then(r => r.docs),
 		},
 	};
 }

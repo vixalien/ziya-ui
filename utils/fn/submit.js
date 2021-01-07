@@ -72,7 +72,7 @@ let submit = async (req, defaults) => {
 		defaults: isPresent(formErrors) ? form : {},
 		messages,
 		errorMessages: errors,
-		id: id || "",
+		id: typeof id =="undefined" ? "" : id,
 	};
 };
 
@@ -97,7 +97,6 @@ let Register = async (req) => {
 			throw e;
 			return {};
 		});
-		console.log("props: ", props, "errors: ", errors);
 	}
 
 	return {
