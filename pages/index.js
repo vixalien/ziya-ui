@@ -63,24 +63,28 @@ export default function Home({
 					name="Names"
 					error={errors.names}
 					defaultValue={defaults.names}
+					autoComplete="name"
 				/>
 				<Input
 					name="Email"
 					type="email"
 					error={errors.email}
 					defaultValue={defaults.email}
+					autoComplete="email"
 				/>
 				<Input
 					name="Phone"
 					type="tel"
 					error={errors.phone}
 					defaultValue={defaults.phone}
+					autoComplete="tel"
 				/>
 				<Select
 					name="Gender"
 					error={errors.gender}
 					defaultValue={defaults.gender}
 					options={toObject(["Male", "Female", "Other", "Unspecific"])}
+					autoComplete="sex"
 				/>
 				<Input
 					name="Total number of people"
@@ -90,6 +94,7 @@ export default function Home({
 					max={10}
 					error={errors.noPeople}
 					defaultValue={defaults.noPeople}
+					autoComplete="off"
 				/>
 				<h3>Location details</h3>
 				<Location defaults={defaults} errors={errors} />

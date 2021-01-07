@@ -82,6 +82,7 @@ let Country = ({ error, value, ...props }) => {
 			error={error} 
 			defaultValue={value}
 			options={toObject(["Rwanda", "Other"])}
+			autoComplete="country-name"
 			{...props}
 		/>
 	)
@@ -97,6 +98,7 @@ let Local = ({ country, defaults, errors }) => {
 				id="specific_country"
 				placeholder="Specify your country"
 				error={errors.specific_country}
+				autoComplete="country-name"
 			/> : null)
 		
 	)
