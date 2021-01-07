@@ -1,5 +1,3 @@
-import { useState, Fragment as F } from "react";
-
 import Input, { Select } from "components/form-input";
 
 import Places from "components/places"
@@ -33,31 +31,4 @@ let SubmitButton = ({ text, ...props }) => {
 	</div>
 }
 
-let Location = ({ defaults = {}, errors = {} }) => {
-	let [ country, setCountry ] = useState(defaults.country);
-	let toObject = (array) => Object.fromEntries(array.map((el) => [el, el]));
-
-	return (
-		<F>
-			<Select 
-				name="Country" 
-				error={errors.country} 
-				defaultValue={defaults.country} 
-				options={toObject(["Rwanda", "Other"])}
-				onChange={(e) => setCountry(e.target.value)}
-			/>
-			{country == "Rwanda" ?
-				<Places values={defaults} errors={errors} /> : 
-				(country == "Other" ? <Input
-					name="Specify"
-					defaultValue={defaults.specific_country}
-					id="specific_country"
-					placeholder="Specify your country"
-					error={errors.specific_country}
-				/> : null)
-			}
-		</F>
-	);
-}
-
-export { Messages, Errors, SubmitButton, Location };
+export { Messages, Errors, SubmitButton };

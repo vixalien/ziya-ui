@@ -1,17 +1,35 @@
 import { Select } from "components/form-input";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
-let DateTimeInputs = ({ dates: Dates, errors = {}, values = {} }) => {
-	let generateDates = () => {
-		return Object.fromEntries(
+let DateInput = ({ Dates, setDate, value, error }) => {
+	let dates = Object.fromEntries(
 			Object.keys(Dates).map((date) => [
 				new Date(parseInt(date)).toDateString(),
 				date,
 			])
 		);
-	};
+	return <Select
+		name="Date"
+		autoComplete="off"
+		defaultValue={value}
+		error={error}
+		options={dates}
+		onChange={e => setDate(e.target.value)}
+	/>
+}
 
+let TimeInput = ({ times, value, error }) => (
+	<Select
+		name="Time"
+		autoComplete="off"
+		defaultValue={value}
+		error={error}
+		options={times}
+	/>
+)
+
+let DateTimeInputs = ({ dates: Dates, errors = {}, values = {} }) => {
 	let parseTime = (time) => {
 		if (typeof time == "object") {
 			return Object.keys(time)[0];
@@ -34,26 +52,13 @@ let DateTimeInputs = ({ dates: Dates, errors = {}, values = {} }) => {
 	let [times, setTimes] = useState({});
 
 	useEffect(() => {
-		setTimes(generateTimes(selectedDate))
-	}, [selectedDate])
-
+		setTimes(generateTimes(selectedDate));
+	}, [selectedDate]);
+	
 	return (
 		<div>
-			<Select
-				name="Date"
-				autoComplete="off"
-				defaultValue={values.date}
-				error={errors.date}
-				options={generateDates()}
-				onChange={e => setDate(e.target.value)}
-			/>
-			<Select
-				name="Time"
-				autoComplete="off"
-				defaultValue={values.time}
-				error={errors.time}
-				options={times}
-			/>
+			<DateInput Dates={Dates} setDate={setDate} value={values.date} error={errors.date}/>
+			<TimeInput times={times} value={values.time} error={errors.time}/>
 		</div>
 	);
 };

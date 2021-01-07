@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, Fragment as F, useEffect } from "react";
 
-import { Select } from "components/form-input";
+import Input, { Select } from "components/form-input";
 
 import Places from "lib/places.json";
 
@@ -73,4 +73,48 @@ let PlaceInputs = ({ errors = {}, values = {} }) => {
 	);
 };
 
-export default PlaceInputs;
+let toObject = (array) => Object.fromEntries(array.map((el) => [el, el]));
+
+let Country = ({ error, value, ...props }) => {
+	return (
+		<Select 
+			name="Country" 
+			error={error} 
+			defaultValue={value}
+			options={toObject(["Rwanda", "Other"])}
+			{...props}
+		/>
+	)
+}
+
+let Local = ({ country, defaults, errors }) => {
+	return (
+		country == "Rwanda" ?
+			<PlaceInputs values={defaults} errors={errors} /> : 
+			(country == "Other" ? <Input
+				name="Specify"
+				defaultValue={defaults.specific_country}
+				id="specific_country"
+				placeholder="Specify your country"
+				error={errors.specific_country}
+			/> : null)
+		
+	)
+}
+
+let Location = ({ defaults = {}, errors = {} }) => {
+	let [ country, setCountry ] = useState(defaults.country);
+
+	return (
+		<F>
+			<Country
+				error={errors.country}
+				value={defaults.country}
+				onChange={(e) => setCountry(e.target.value)}
+			/>
+			<Local country={country} defaults={defaults} errors={errors}/>
+		</F>
+	);
+}
+
+export default Location;

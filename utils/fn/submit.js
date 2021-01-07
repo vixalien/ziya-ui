@@ -1,6 +1,8 @@
 import getRawBody from "raw-body";
 import { checkAll } from "lib/validate";
 
+import loadConfig from "utils/fn/loadConfig";
+
 import { save, increment } from "./db";
 
 let isPresent = (obj) => !!Object.entries(obj).length;
@@ -8,6 +10,7 @@ let isPresent = (obj) => !!Object.entries(obj).length;
 let submit = async (req, defaults) => {
 	let messages = [],
 		errors = [];
+
 	const body = await getRawBody(req);
 	let form = {
 		...defaults,
@@ -44,14 +47,11 @@ let submit = async (req, defaults) => {
 	if (isPresent(formErrors)) {
 		errors.push("Check for errors then try again");
 	} else {
+		let id;
 		// Push the data into DB
 		await save(data)
-			.catch((e) => {
-				errors.push(
-					"An error occured while creating your account!: " + e.toString()
-				);
-				throw e;
-			})
+			// Save the id
+			.then((data) => (id = data.id))
 			.then(() => {
 				return increment(form.date, form.time, noPeople).catch((e) => {
 					errors.push("Check for errors then try again");
@@ -60,14 +60,56 @@ let submit = async (req, defaults) => {
 				});
 			})
 			.then(() => messages.push("Successfully registered as attendee!"))
-			.catch();
+			.catch((e) => {
+				errors.push(
+					"An error occured while creating your account!: " + e.toString()
+				);
+				throw e;
+			});
 	}
 	return {
 		errors: formErrors,
 		defaults: isPresent(formErrors) ? form : {},
 		messages,
 		errorMessages: errors,
+		id: id || "",
 	};
 };
 
-export default submit;
+let Register = async (req) => {
+	let { dates } = await loadConfig();
+	let errors = [];
+	let defaults = {
+		country: "",
+		province: "",
+		district: "",
+		sector: "",
+		date: "",
+		time: "",
+		gender: "",
+	};
+
+	// IF submitting
+	let props = {};
+	if (req.method == "POST") {
+		props = await submit(req, defaults).catch((e) => {
+			errors.push("An unexpected error occured: " + e.toString());
+			throw e;
+			return {};
+		});
+		console.log("props: ", props, "errors: ", errors);
+	}
+
+	return {
+		props: {
+			dates,
+			errors,
+			defaults,
+			messages: [],
+			errorMessages: [],
+			...props,
+		},
+	};
+};
+
+export default Register;

@@ -5,14 +5,13 @@ import withErrors from "components/withErrors";
 import Input, { Select } from "components/form-input";
 
 import DateTime from "components/datetime";
-import Places from "components/places";
+import Location from "components/places";
 
 import submit from "utils/fn/submit";
-import loadConfig from "utils/fn/loadConfig";
 
-import { parseInput, checkAll } from "lib/validate";
+import { checkAll } from "lib/validate";
 
-import { Messages, Errors, SubmitButton, Location } from "components/index";
+import { Messages, Errors, SubmitButton } from "components/index";
 
 export default function Home({
 	dates,
@@ -101,35 +100,5 @@ export default function Home({
 }
 
 export async function getServerSideProps({ req }) {
-	let { dates } = await loadConfig();
-	let errors = {};
-	let defaults = {
-		country: "",
-		province: "",
-		district: "",
-		sector: "",
-		date: "",
-		time: "",
-		gender: "",
-	};
-
-	// IF submitting
-	let props = {};
-	if (req.method == "POST") {
-		props = await submit(req, defaults).catch((e) => {
-			errors.push("An unexpected error occured: " + e.toString());
-			return;
-		});
-	}
-
-	return {
-		props: {
-			dates,
-			errors,
-			defaults,
-			messages: [],
-			errorMessages: [],
-			...props,
-		},
-	};
+	return await submit(req);
 }

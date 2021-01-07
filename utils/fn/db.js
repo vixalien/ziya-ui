@@ -28,7 +28,11 @@ let getNextId = async () => {
 };
 
 let save = async (data) => {
-	await db.put({ _id: await getNextId(), ...data, timeRegistered: Date.now() });
+	return await db.put({
+		_id: await getNextId(),
+		...data,
+		timeRegistered: Date.now(),
+	});
 };
 
 let parseTime = (time, defaultPlaces) => {
