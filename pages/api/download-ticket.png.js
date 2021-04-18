@@ -8,6 +8,12 @@ import { getReservation } from "utils/fn/db";
 
 import variables from "lib/variables";
 
+/* NEXTJS Bizarre Font Fix https://github.com/lovell/sharp/issues/2499 */
+import path from 'path';
+path.resolve(process.cwd(), 'fonts', 'fonts.conf');
+path.resolve(process.cwd(), 'fonts', 'MyFontName.ttf');
+/* END NEXTJS Font Fix */
+
 let btoa = (str) => Buffer.from(str).toString("base64");
 
 export default async (req, res) => {
